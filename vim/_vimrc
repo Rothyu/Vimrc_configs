@@ -397,5 +397,4 @@ let g:vimim_shuangpin = 'flypy'
 let g:vimim_toggle = -1 
 
 
-"This is for test
-"This is for gitdiff test
+"I want to know something more

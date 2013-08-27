@@ -1,0 +1,17 @@
+# Most recently edited files in Vim (version 3.0)
+C:\Users\roth\Documents\Home\.gitconfig
+D:\scripts\test.py
+D:\Program Files (x86)\Vim\_vimrc
+D:\scripts\check\origin.txt
+D:\scripts\check\check.py
+D:/Program Files (x86)/Vim/_vimrc
+C:\Users\roth\Desktop\New Text Document.txt
+C:/Users/roth/Desktop/New Text Document.txt
+C:\Users\roth\Desktop\v-imim.vim
+D:\Program Files (x86)\Vim\vimfiles\plugin\vimim.vim
+C:\Users\roth\Desktop\vimim.vim
+D:\Program Files (x86)\Vim\vimfiles\plugin\v-imim.vim
+C:\Users\roth\Desktop\test
+D:\Program Files (x86)\Vim\New Text Document.txt
+D:\Program Files (x86)\Vim\vimfiles\doc\ctrlp.txt
+D:\Program Files (x86)\Vim\vimfiles\plugin\ctrlp.vim

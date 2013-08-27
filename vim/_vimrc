@@ -1,0 +1,397 @@
+" Sections:
+
+" => General
+" => VIM user interface
+" => Colors and Fonts
+" => Files, backups and undo
+" => Text, tab and indent related
+" => Moving around, tabs, windows and buffers
+" => Editing mappings
+" => Spell checking
+" => Fast editing and reloading of vimrc configs
+" => Turn persistent undo on
+" => Command mode related
+" => Parenthesis/bracket 
+" => General abbreviations
+" => Plugin setting
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" => General
+
+" set no compatible with vi
+set nocompatible
+
+" Set font according to system
+if has("gui_running")
+  if has("gui_gtk2")
+    set guifont=Inconsolata\ 12
+  elseif has("gui_win32")
+    set guifont=Consolas:h12:cANSI
+  endif
+endif
+
+" Sets how many line of history VIM has to remember
+set history=600
+
+" Enable filetype plugins
+filetype on
+filetype plugin on
+filetype indent on
+
+" Set to auto read when a file is changed from the outside
+if exists("&autoread")
+    set autoread
+endif
+
+" With a map leader it's possible to do extra key combinations
+" like <leader>w saves the current file
+let mapleader = ","
+let g:mapleader = ","
+
+" Fast saving
+nmap <leader>w :w!<cr>
+
+
+" => VIM user interface
+
+set number
+
+" Set the window size 
+set lines=32
+set columns=78
+
+" Set colorscheme and background
+colo peaksea
+
+if strftime("%H")>= 0 && strftime("%H")<=8
+    set background=dark
+else
+    set background=light
+endif
+
+func! s:SwitchMyStyle()
+    if &background=='dark'
+        set background=light
+    elseif &background=='light'
+        set background=dark
+    endif
+endfunc
+
+map <silent> <F2> :call <SID>SwitchMyStyle()<cr>
+
+" Set 6 lines to the cursor - when moving vertically using j/k
+set so=6
+
+" Turn on the Wild menu
+set wildmenu
+
+" Enable mouse
+set mouse=a
+
+" Ignore compiled files
+set wildignore=*.o,*~,*pyc
+
+" Always show current position
+"set ruler
+
+" Height of the command bar
+set cmdheight=2
+
+" A buffer becomes hidden when it is abandoned
+set hid
+
+" Configure backspace so it acts as it should act
+set backspace=eol,start,indent
+
+" Ignore case when searching
+set ignorecase
+
+" When searching try to be smart about cases
+set smartcase
+
+" Highlight search results
+set hlsearch
+
+" Make search act like search in modern browsers
+set incsearch
+
+" Don't redraw while executing macros (good performance config)
+set lazyredraw
+
+" For regular expressions turn magic on
+set magic
+
+" Show matching brackets when text indicator is over them
+set showmatch
+
+" How many tenths of seconds to blink when matching brackets
+set mat=2
+
+" No annoying sound on errors
+set noerrorbells
+set novisualbell
+set t_bv=
+set tm=500
+
+" Don't show the help information when start
+
+set shortmess=atI
+
+" Make views automatic
+autocmd BufWinLeave *.* mkview
+autocmd BufWinEnter *.* silent loadview
+
+
+" => Colors and Fonts
+
+" Enable syntax highlighting
+syntax enable
+
+" Set extra options when running in GUI mode
+if has("gui_running")
+    set guioptions-=T
+    set guioptions+=e
+    set t_Co=256
+    set guitablabel=%M\ %t
+endif
+
+" Set utf-8 as standard encoding and en_US as the standard language
+set encoding=utf-8
+set fileencodings=ucs-bom,utf-8,cp54936
+set fileencoding=utf-8
+set termencoding=utf-8
+
+" Best Status line
+set laststatus=2
+set statusline =
+set statusline +=%1*\ %n\ %*            "buffer number
+set statusline +=%5*%{&ff}%*            "file format
+set statusline +=%3*%y%*                "file type
+set statusline +=%4*\ %<%F%*            "full path
+set statusline +=%2*%m%*                "modified flag
+set statusline +=%1*%=%5l%*             "current line
+set statusline +=%2*/%L%*               "total lines
+set statusline +=%5*\ %3p%%
+set statusline +=%1*%4v\ %*             "virtual column number
+set statusline +=%2*0x%04B\ %*          "character under cursor
+
+
+" => Files, backups and undo
+
+" Turn backup off
+"set nobackup
+set nowb
+set noswapfile
+
+
+" => Text, tab and indent related
+
+" Use spaces instead of tabs
+set expandtab
+
+" Be smart when using tabs
+set smarttab
+
+" 1 tab = 2 spaces
+set shiftwidth=2
+set tabstop=2
+
+" Line break on 500 characters
+set lbr
+set tw=500
+
+set ai "Auto indent
+set si "Smart indent
+set wrap "Wrap lines
+
+" => Moving around, tabs, windows and buffers
+
+" Treat long lines as break lines (useful when moving around in them)
+map j gj
+map k gk
+
+" Disable highlight when <leader><cr> is pressed
+map <silent> <leader><cr> :noh<cr>
+
+" Smart way to move between windows
+nmap <C-j> <C-W>j
+nmap <C-k> <C-W>k
+nmap <C-h> <C-W>h
+nmap <C-l> <C-W>l
+
+" Close the current buffer
+map <leader>bd :bd!<cr>
+
+" Close all buffers
+map <leader>ba :1,1000 bd!
+
+" Useful mapping for managing tabs
+map <leader>tn :tabnew<cr>
+map <leader>th :tabprevious<cr>
+map <leader>to :tabonly<cr>
+map <leader>tc :tabclose<cr>
+map <leader>tl :tabnext<cr>
+
+" Open a new tab with the current buffer's path
+map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>\
+
+" Switch CWD to the directory of the open buffer
+map <leader>cd :cd %:p:h<cr>:pwd<cr>
+
+" Switch CWD to the Desktop in Windows
+if has('gui_win32')
+  map <leader>dd :cd C:\Users\roth\Desktop<cr>:pwd<cr>
+endif
+
+if expand('%:p:h')=='C:\Windows\System32'
+  lcd C:\Users\roth\Desktop\
+endif
+
+" Quikly open a buffer for script
+map <leader>q :e $Home\buffer\<cr> 
+
+" Remember info about open buffers on close
+set viminfo^=%
+
+
+" => Editing mappings
+
+" Move a line of text using ALT+[jk]
+nmap <M-j> mz:m+<cr>`z
+nmap <M-k> mz:m-2<cr>`z
+vmap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
+vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
+
+" Delete trailing white space on save, useful for python
+func! DeleteTrailingWS()
+    exe "normal mz"
+    %s/\s\+$//ge
+    exe "normal 'z"
+endfunc
+autocmd BufWrite *.py :call DeleteTrailingWS()
+
+" Toggle line break symbol
+map <leader>l :setlocal list!<cr> 
+
+" Toggle digraphs
+"map <leader>dg :setlocal digraph!<cr>
+"map <leader>dt :dig<cr>
+
+" => Spell checking
+
+" Pressing ,ss will toggle and untoggle spell checking
+map <leader>ss :setlocal spell!<cr>
+
+
+" => Fast editing and reloading of vimrc configs
+
+map <silent> <leader>ee :e! D:\Program Files (x86)\Vim\_vimrc<cr>
+autocmd! BufWritePost _vimrc so % 
+
+
+" => Turn persistent undo on
+
+set undofile
+set undodir=~\undodir\
+set undolevels=1000
+set undoreload=1000
+
+
+" => Command mode related
+
+" Smart mapping on the command line
+cno $h e ~\
+cno $d e C:\Users\roth\Desktop\
+cno $c e .\
+cno $s e D:\scripts\
+
+" Bash like keys for the command line
+cno <C-A>  <Home>
+cno <C-E>  <End>
+
+
+" => Parenthesis/bracket 
+
+vnoremap $1 <esc>`>a)<esc>`<i(<esc>
+vnoremap $2 <esc>`>a]<esc>`<i[<esc>
+vnoremap $3 <esc>`>a}<esc>`<i{<esc>
+vnoremap $e <esc>`>a"<esc>`<i"<esc>
+vnoremap $q <esc>`>a'<esc>`<i'<esc>
+vnoremap $t <esc>`>a><esc>`<i<<esc>
+
+" Map auto complete of (, ", ', [ 
+inoremap $1 ()<esc>i
+inoremap $2 []<esc>i
+inoremap $3 {}<esc>i
+inoremap $4 {<esc>o}<esc>o
+inoremap $q ''<esc>i
+inoremap $e ""<esc>i
+inoremap $t <><esc>i
+
+
+" => General abbreviations
+
+iab xdate <c-r>=strftime("%Y/%m/%d %H:%M:%S")<cr>
+iab xday <c-r>=strftime("%Y/%m/%d")<cr>
+iab xmail rothsyu@gmail.com
+
+
+" => Plugin setting
+
+"python auto completion
+let g:pydiction_location = 'D:\Program Files (x86)\Vim\vimfiles\ftplugin\pydiction\complete-dict' 
+let g:pydiction_menu_height = 10
+
+" Python compile 
+map <F5> :w<cr>:!python.exe %<cr>
+
+" Tagbar (ctags)
+
+let g:tagbar_width= 25
+let g:tagbar_autofocus = 1
+let g:tagbar_compact = 1 
+let g:tagbar_show_visibility = 0
+let g:tagbar_expand =1 
+let g:tagbar_indent = 1
+let g:tagbar_foldlevel = 2
+let g:tagbar_ctags_bin = 'D:\Program Files (x86)\ctags58\ctags.exe'
+nmap <leader>t :TagbarToggle<cr>
+
+" Yank Ring
+map <leader>y :YRShow<cr>
+
+" BufExplorer
+let g:bufExplorerDefaultHelp=1
+let g:bufExplorerShowRelativePath=0
+let g:bufExplorerFindActive=1
+let g:bufExploreSortBy='name'
+map <leader>b :BufExplorer<cr>
+
+" MRU Plugin
+let MRU_Entries = 400
+let MRU_File = 'D:\Program Files (x86)\Vim\vimfiles\_vim_mru_files.txt'
+
+map <leader>r :MRU<cr>
+
+" CTRL-P
+let g:ctrlp_map = '<c-f>'
+map <c-b> :CtrlPBuffer<cr>
+let g:ctrlp_working_path_mode=0
+let g:ctrlp_max_height=15
+
+" Nerd Tree
+let g:NERDTreeWinSize=20
+let NERDTreeMinimalUI=1
+let g:NERDTreeIgnore=['\.vim$', '\~$']
+map <leader>nn :NERDTreeToggle<cr>
+
+
+let g:vimim_cloud = 'sogou'  
+let g:vimim_map = 'c-bslash'  
+let g:vimim_mode = 'dynamic'  
+let g:vimim_mycloud = 0  
+let g:vimim_plugin = 'D:\Program Files (x86)\Vim\vimfiles\plugin'  
+let g:vimim_punctuation = 2  
+let g:vimim_shuangpin = 'flypy'  
+let g:vimim_toggle = -1 

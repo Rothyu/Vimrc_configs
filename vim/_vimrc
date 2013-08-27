@@ -395,3 +395,6 @@ let g:vimim_plugin = 'D:\Program Files (x86)\Vim\vimfiles\plugin'
 let g:vimim_punctuation = 2  
 let g:vimim_shuangpin = 'flypy'  
 let g:vimim_toggle = -1 
+
+
+"This is for test

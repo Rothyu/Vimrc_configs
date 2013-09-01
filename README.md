@@ -10,3 +10,4 @@ This is another change to know more things
 >>>>>>> 7fb1ac2949c016c29f19cf9084820040deb4a305
 =============
 I want to know what happened when two files both changed
+This is the local changes

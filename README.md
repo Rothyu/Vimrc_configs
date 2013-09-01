@@ -15,3 +15,4 @@ This is the local changes
 =======
 This is the remote changes
 >>>>>>> bb9b138b9893e217c1410f3e3c1495e9e2ff734a
+This is the second remote changes
